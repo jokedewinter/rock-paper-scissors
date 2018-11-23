@@ -1,90 +1,83 @@
-
-/*
- * Initialise variables
- * ------------------------------------------ */
-var played = 0;
-var you_won = 0;
-var you_draw = 0;
-
-$("#played").append(played);
-$("#won").append(you_won);
-$("#draw").append(you_draw);
+/* Variables we need for the game */
 
 var choices = ["rock", "paper", "scissors"];
 
+var played = 0;
+var won = 0;
+var lost = 0;
+var draw = 0;
 
-/*
- * Check you move with button clicked
- * ------------------------------------------ */
+$('.score').hide();
 
-$("#rock").click(function(event) {
-	$("#you").text('rock');
-	var computer = computer_move();
-	compare('rock', computer);
-});
-	
-$("#paper").click(function(event) {
-	$("#you").text('paper');
-	var computer = computer_move();
-	compare('paper', computer);
-});
-
-$("#scissors").click(function(event) {
-	$("#you").text('scissors');
-	var computer = computer_move();
-	compare('scissors', computer);
+/* User click */
+$('button').click(function(event){
+  $('button').removeClass("active");
+  $('#machine p').removeClass("active");
+  
+  var you = this.getAttribute("value");
+  $(this).addClass("active");
+  var machine = computer_move();
+  var verdict = compare(you, machine);
+  score(verdict);
 });
 
-/*
- * Computer counter move
- * ------------------------------------------ */
+
+/* Machine move */
 function computer_move() {
-	/*
-	The first item in an array is 0.
-	
-	The function to generate a random value between two digits:
-	Math.floor(Math.random() * (max - min)) + min
-	The maximum is exclusive and the minimum is inclusive.
-	The Math.foor function makes sure the result is a round number.
-	*/
-	var computer = Math.floor(Math.random() * (3 - 0)) + 0; 
-	computer = choices[computer];
-	$("#computer").empty();
-	$("#computer").append(computer);
-	return computer;
+  var machine = Math.floor(Math.random() * (3 - 0)) + 0;
+  machine = choices[machine];
+  $("p[data-move="+machine+"]").addClass("active");
+  //$("#machine").text(machine);
+  return machine;
 }
 
-/*
- * Compare the result
- * ------------------------------------------ */
-function compare(you, computer) {
 
-	/* 
-	The verdict variable tracks the result. 
-	Set to 'lose' initially to change value in case of a win or draw.
-	*/
-	var verdict = 'lose';
+/* Compare moves */
+function compare(you, machine) {
+  
+  var verdict_word = 'lose';
+  var verdict_symbol = '<';
+  
+  if (you == machine) {
+    verdict_word = 'draw';
+    verdict_symbol = '=';
 	
-	if (( you == 'rock' ) && ( computer == 'scissors' )) { verdict = 'win'; }
-	if (( you == 'paper' ) && ( computer == 'rock' )) { verdict = 'win'; }
-	if (( you == 'scissors' ) && ( computer == 'paper' )) { verdict = 'win'; }
+  } else if ((you == "rock") && (machine == "scissors")) {
+    verdict_word = 'win';
+    verdict_symbol = '>';
 	
-	if ( you == computer ) { verdict = 'draw'; }
+  } else if ((you == "paper") && (machine == "rock")) {
+    verdict_word = 'win';
+    verdict_symbol = '>';
+	
+  } else if ((you == "scissors") && (machine == "paper")) {
+    verdict_word = 'win';
+    verdict_symbol = '>';
+  }
+  
+  $("#verdict--symbol").text(verdict_symbol);
+  $("#verdict--word").text(verdict_word);
+  return verdict_word;
+}
 
-	$("#verdict").text('you ' + verdict);
-	
-	if ( verdict == 'win' ) { 
-		you_won++; 
-		$("#won").text(you_won); 
-	}
-	
-	if ( verdict == 'draw' ) { 
-		you_draw++; 
-		$("#draw").text(you_draw); 
-	}
 
-	played++;
-	$("#played").text(played);
-	
-	return;
+function score(verdict) {
+  switch (verdict) {
+    case 'win':
+      won++;
+      $("#won").text(won);
+      break;
+    case 'lose':
+      lost++;
+      $("#lost").text(lost);
+      break;
+    case 'draw':
+      draw++;
+      $("#draw").text(draw);
+      break;
+  }
+
+  played++;
+  $("#played").text(played);
+  $('.score').show();
 }

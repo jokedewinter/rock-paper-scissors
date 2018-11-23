@@ -1,0 +1,141 @@
+/* --------------------------------------
+ * General styles
+ * -------------------------------------- */
+
+body {
+	width: 90%;
+	margin: 2em auto;
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;
+	
+	background-color: #2a2a2a;
+	color: #fff;
+}
+
+
+/* --------------------------------------
+ * Typography
+ * -------------------------------------- */
+
+h1 {
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-size: 12px;
+	margin-bottom: 3em;
+}
+
+h2,
+.score p {
+	font-size: 16px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin: 0 0 0.5em 0;
+	font-weight: bold;
+}
+
+ span:not(#played) { display: block; }
+
+/* --------------------------------------
+ * .move section
+ * -------------------------------------- */
+
+.move h2 { color: #666; }
+
+#machine {
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+#machine h2 { margin: 0.5em 0 0 0; }
+#machine > * { text-align: right; }
+
+.move--option {
+	font-size: 20px;
+	color: #fff;
+	display: block;
+	line-height: 1.5;
+}
+
+#verdict--symbol {
+	font-size: 100px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 1;
+}
+
+.active {
+	font-weight: bold;
+	line-height: 1;
+	
+	/* Fluid typography */ 
+	font-size: calc(70px + (150 - 70) * ((100vw - 300px) / (1600 - 300)));	
+}
+
+
+/* --------------------------------------
+ * .score section
+ * -------------------------------------- */
+
+.score {
+	display: grid;
+	margin-top: 3em;	
+	padding-top: 3em;
+	border-top: 2px solid #666;
+}
+
+.score--verdict h2 { margin-bottom: 0; }
+
+.score > *:not(.score--verdict) { text-align: center; }
+.score:not(.score--verdict) p span { margin-top: 0.4em; }
+.score span:not(#played) { font-size: calc(50px + (100 - 50) * ((100vw - 300px) / (1600 - 300))); }
+.score span#verdict--word { font-size: calc(70px + (150 - 70) * ((100vw - 300px) / (1600 - 300))); }
+
+
+
+@media screen and ( max-width: 37.49em ) {
+
+	.score { grid-template-columns: repeat(3, 1fr); }
+
+	.score--verdict { grid-column: 1 / -1; }
+	#won { grid-column: 1 / 2; }
+	#draw { grid-column: 2 / 3; }
+	#lost { grid-column: 3 / 4; }
+
+	.score--verdict {
+		border-bottom: 2px solid #777;
+		padding-bottom: 1em;
+		margin-bottom: 2em;	
+	}
+}
+
+
+@media screen and ( min-width: 37.50em ) {
+	
+	.score {
+		grid-template-columns: 50% repeat(3, 1fr);
+		grid-template-areas: "verdict won draw lost";
+	}
+	
+	.score--verdict { grid-area: verdict; }
+	#won { grid-area: won; }
+	#draw { grid-area: draw; }
+	#lost { grid-area: lost; }
+
+	.score > *:not(.score--verdict) { text-align: right; }
+}
+
+
+/* --------------------------------------
+ * The end
+ * -------------------------------------- */
+
+.jokedewinter {
+	clear: both;
+	float: right;
+	width: 75px; 
+	height: 30px;
+	text-indent: -999em;
+	display: block;
+	margin-top: 4em;
+	background: url('../images/jokedewinter.svg');	
+}
